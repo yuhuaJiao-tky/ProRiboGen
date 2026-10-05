@@ -3,7 +3,7 @@
 Protein-conditioned RNA generation.
 
 ```bash
-git clone https://github.com/jyh-tky/ProRiboGen.git
+git clone https://github.com/yuhuaJiao-tky/ProRiboGen.git
 cd ProRiboGen
 pip install -r requirements.txt
 ```
