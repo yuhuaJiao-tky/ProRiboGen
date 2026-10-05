@@ -1,0 +1,9 @@
+torch>=2.1
+transformers>=4.40
+pandas
+numpy
+h5py
+tqdm
+scipy
+matplotlib
+logomaker

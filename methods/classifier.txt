@@ -1,0 +1,15 @@
+RNA realism classifier
+
+We trained a protein-conditioned binary classifier to distinguish real RBP-bound RNAs from composition-matched negatives. Positives were motif-balanced ProRiboGen pairs; each negative was obtained by nucleotide shuffling of the same RNA (length and composition preserved) under the same protein identity.
+
+The model initializes from the pretrained ProRiboGen generator (6 layers) with ESM2-3B protein embeddings (d = 2560). After the encoder, RNA tokens attend to protein tokens (8-head cross-attention); CLS / mean / max / attention pooling and a bilinear RNA-protein score are concatenated and mapped by an MLP to a logit z. The predicted probability is
+
+    p = sigma(z).
+
+With the ESM trunk frozen except AdaLN and protein cross-attention, we optimize
+
+    L = L_BCE + 0.5 * L_rank,
+
+    L_rank = E[ max(0, m - (z+ - z-)) ],
+
+where m = 0.5 and (z+, z-) are scores of a positive-negative pair for the same protein. Training used AdamW (head 5e-4, conditioning 1e-5), cosine decay, paired batches, two-epoch head warmup, then joint updates; the best validation checkpoint (epoch 2) was retained. On the held-out test set the model reached AUROC 0.878 (accuracy 0.788 at threshold 0.5).

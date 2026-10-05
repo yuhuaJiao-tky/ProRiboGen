@@ -1,0 +1,59 @@
+{
+  "Human-HNRNPK": {
+    "uniprot": "P61978",
+    "sequence_length": 463,
+    "note": "463 aa canonical HNRNPK (P61978). P31942 is 346 aa HNRNPH3 — wrong accession for this project sequence.",
+    "domains": [
+      {"start": 42, "end": 104, "label": "KH 1"},
+      {"start": 144, "end": 209, "label": "KH 2"},
+      {"start": 236, "end": 273, "label": "RGG-box"},
+      {"start": 387, "end": 451, "label": "KH 3"}
+    ]
+  },
+  "Human-U2AF1": {
+    "uniprot": "Q01081",
+    "domains": [
+      {"start": 65, "end": 147, "label": "RRM"}
+    ]
+  },
+  "Human-PUM1": {
+    "uniprot": "Q14671",
+    "domains": [
+      {"start": 828, "end": 1168, "label": "PUM-HD"}
+    ]
+  },
+  "Human-DKC1": {
+    "uniprot": "O60832",
+    "domains": [
+      {"start": 296, "end": 371, "label": "PUA"}
+    ]
+  },
+  "Human-QKI": {
+    "uniprot": "Q96PU8",
+    "sequence_length": 341,
+    "note": "InterPro user-corrected: KH 13-67 and KH superfamily 72-213 (ends at 213)",
+    "domains": [
+      {"start": 13, "end": 67, "label": "KH 1"},
+      {"start": 72, "end": 213, "label": "KH 2"}
+    ]
+  },
+  "Human-ELAVL1": {
+    "uniprot": "Q15717",
+    "sequence_length": 326,
+    "domains": [
+      {"start": 20, "end": 98, "label": "RRM 1"},
+      {"start": 106, "end": 186, "label": "RRM 2"},
+      {"start": 244, "end": 322, "label": "RRM 3"}
+    ]
+  },
+  "Human-LSM11": {
+    "uniprot": "P83369",
+    "sequence_length": 360,
+    "note": "InterPro user-corrected domains",
+    "domains": [
+      {"start": 23, "end": 64, "label": "domain 1"},
+      {"start": 145, "end": 232, "label": "Sm-like"},
+      {"start": 337, "end": 359, "label": "SM 2"}
+    ]
+  }
+}

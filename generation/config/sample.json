@@ -1,0 +1,37 @@
+{
+    "data": {
+        "tokenizer_path": "tokenizer",
+        "train_csv": "data/train.csv",
+        "test_csv": "data/test.csv",
+        "protein_h5": "data/protein_embeddings.h5",
+        "max_generated_rna_bp": 101,
+        "append_eos_token": true
+    },
+    "model": {
+        "use_FiLM": false,
+        "use_AdaLN": true,
+        "use_gated_bias": false,
+        "use_protein_conditioning_attention": true,
+        "protein_dim": 2560,
+        "num_hidden_layers": 6
+    },
+    "train": {
+        "use_bf16": true,
+        "t_eps": 0.001
+    },
+    "sample": {
+        "sample_csv": "data/csvs/sample_test.csv",
+        "checkpoint": "checkpoints/generator.pt",
+        "output_dir": "outputs/sample",
+        "num_sequences_per_rbp": 1024,
+        "length_bp": 80,
+        "min_rna_bp": 12,
+        "steps": 50,
+        "temperature": 1.0,
+        "top_p": 0.9,
+        "top_k": 0,
+        "alg": "maskgit_plus",
+        "alg_temp": 0.8,
+        "variable_length": true
+    }
+}

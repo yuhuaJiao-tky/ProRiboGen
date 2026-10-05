@@ -1,0 +1,54 @@
+{
+    "data": {
+        "tokenizer_path": "tokenizer",
+        "train_csv": "data/train.csv",
+        "test_csv": "data/test.csv",
+        "protein_h5": "data/protein_embeddings.h5",
+        "max_generated_rna_bp": 101,
+        "append_eos_token": true
+    },
+    "model": {
+        "use_FiLM": false,
+        "use_AdaLN": true,
+        "use_gated_bias": false,
+        "use_protein_conditioning_attention": true,
+        "protein_dim": 2560,
+        "num_hidden_layers": 6
+    },
+    "train": {
+        "gpu_ids": [0, 1, 2, 3, 4, 5, 6, 7],
+        "port": 29527,
+        "log_file": "train.log",
+        "batch_size_per_gpu": 16,
+        "eval_batch_size_per_gpu": 16,
+        "grad_accum_steps": 4,
+        "num_epochs": 20,
+        "num_workers": 0,
+        "resume_path": null,
+        "lr_schedule": "constant",
+        "lr": 0.00014,
+        "betas": [0.9, 0.95],
+        "weight_decay": 0.01,
+        "adam_eps": 1e-08,
+        "use_bf16": true,
+        "log_every": 200,
+        "grad_clip": 1.0,
+        "t_eps": 0.001,
+        "ckpt_dir": "checkpoints",
+        "use_pn_objective": true,
+        "pn_alpha": 0.2,
+        "pn_margin": 0.2,
+        "pn_num_negatives": 1,
+        "pn_sampling_strategy": "random",
+        "pn_use_batch_negatives_first": true
+    },
+    "sample": {
+        "steps": 50,
+        "temperature": 1.0,
+        "top_p": 0.90,
+        "top_k": 0,
+        "alg": "maskgit_plus",
+        "alg_temp": 0.8,
+        "variable_length": true
+    }
+}

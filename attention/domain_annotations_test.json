@@ -1,0 +1,510 @@
+{
+  "A.thaliana-HLP1": {
+    "uniprot": "Q9FM47",
+    "domains": [
+      {
+        "name": "RNA-binding domain",
+        "start": 39,
+        "end": 122
+      },
+      {
+        "name": "Nucleotide-binding alpha-beta plait domain superfamily",
+        "start": 122,
+        "end": 249
+      }
+    ]
+  },
+  "Fly-orb2": {
+    "uniprot": "A4V1P2",
+    "domains": [
+      {
+        "name": "RRM1",
+        "start": 447,
+        "end": 538
+      },
+      {
+        "name": "Nucleotide-binding alpha-beta plait domain superfamily",
+        "start": 539,
+        "end": 632
+      },
+      {
+        "name": "Cytoplasmic polyadenylation element-binding protein",
+        "start": 633,
+        "end": 697
+      }
+    ]
+  },
+  "Human-ALKBH5": {
+    "uniprot": "Q6P6C2",
+    "domains": [
+      {
+        "name": "Alpha-ketoglutarate-dependent dioxygenase AlkB-like",
+        "start": 64,
+        "end": 292
+      }
+    ]
+  },
+  "Human-APOBEC3C": {
+    "uniprot": "Q9NRW3",
+    "domains": [
+      {
+        "name": "Cytidine Deaminase",
+        "start": 5,
+        "end": 190
+      }
+    ]
+  },
+  "Human-AQR": {
+    "uniprot": "O60306",
+    "domains": [
+      {
+        "name": "Intron-binding protein aquarius N-terminal",
+        "start": 24,
+        "end": 414
+      },
+      {
+        "name": "Intron-binding protein aquarius",
+        "start": 493,
+        "end": 659
+      },
+      {
+        "name": "Intron-binding protein aquarius insert domain",
+        "start": 707,
+        "end": 794
+      },
+      {
+        "name": "EEXXQ-box helicase domain of AQR",
+        "start": 797,
+        "end": 1152
+      },
+      {
+        "name": "P-loop containing nucleotide triphosphate hydrolases",
+        "start": 1142,
+        "end": 1327
+      }
+    ]
+  },
+  "Human-BCLAF1": {
+    "uniprot": "Q9NYF8",
+    "domains": []
+  },
+  "Human-CPEB4": {
+    "uniprot": "Q17RY0",
+    "domains": [
+      {
+        "name": "RRM1",
+        "start": 472,
+        "end": 563
+      },
+      {
+        "name": "Nucleotide-binding alpha-beta plait domain superfamily",
+        "start": 566,
+        "end": 660
+      },
+      {
+        "name": "Cytoplasmic polyadenylation element-binding protein",
+        "start": 658,
+        "end": 722
+      }
+    ]
+  },
+  "Human-DKC1": {
+    "uniprot": "O60832",
+    "domains": [
+      {
+        "name": "PUA domain superfamily",
+        "start": 49,
+        "end": 81
+      },
+      {
+        "name": "Pseudouridine synthase",
+        "start": 82,
+        "end": 288
+      },
+      {
+        "name": "PUA domain",
+        "start": 289,
+        "end": 380
+      }
+    ]
+  },
+  "Human-EXOSC5": {
+    "uniprot": "Q9NQT4",
+    "domains": [
+      {
+        "name": "PNPase/RNase PH domain superfamily",
+        "start": 25,
+        "end": 235
+      }
+    ]
+  },
+  "Human-HNRNPK": {
+    "uniprot": "P61978",
+    "domains": [
+      {
+        "name": "NUC014",
+        "start": 1,
+        "end": 43
+      },
+      {
+        "name": "K Homology domain",
+        "start": 41,
+        "end": 112
+      },
+      {
+        "name": "KH-domain type I",
+        "start": 142,
+        "end": 221
+      },
+      {
+        "name": "K Homology domain",
+        "start": 384,
+        "end": 463
+      }
+    ]
+  },
+  "Human-HNRNPM": {
+    "uniprot": "P52272",
+    "domains": [
+      {
+        "name": "RNA-binding domain",
+        "start": 68,
+        "end": 175
+      },
+      {
+        "name": "Nucleotide-binding alpha-beta plait domain superfamily",
+        "start": 651,
+        "end": 730
+      }
+    ]
+  },
+  "Human-LSM11": {
+    "uniprot": "P83369",
+    "domains": [
+      {
+        "name": "U7 snRNA-associated Sm-like protein LSM11 N-terminal domain",
+        "start": 23,
+        "end": 64
+      },
+      {
+        "name": "snRNP Sm proteins",
+        "start": 157,
+        "end": 358
+      }
+    ]
+  },
+  "Human-NIP7": {
+    "uniprot": "Q9Y221",
+    "domains": [
+      {
+        "name": "Pre-PUA domain",
+        "start": 1,
+        "end": 94
+      },
+      {
+        "name": "PUA domain",
+        "start": 94,
+        "end": 180
+      }
+    ]
+  },
+  "Human-PPIG": {
+    "uniprot": "Q13427",
+    "domains": [
+      {
+        "name": "Cyclophilin-like",
+        "start": 3,
+        "end": 185
+      }
+    ]
+  },
+  "Human-PUM1": {
+    "uniprot": "Q14671",
+    "domains": [
+      {
+        "name": "Leucine-rich Repeat Variant",
+        "start": 827,
+        "end": 1176
+      }
+    ]
+  },
+  "Human-PUM2": {
+    "uniprot": "Q8TB72",
+    "domains": [
+      {
+        "name": "Leucine-rich Repeat Variant",
+        "start": 705,
+        "end": 1056
+      }
+    ]
+  },
+  "Human-SERBP1": {
+    "uniprot": "Q8NC51",
+    "domains": [
+      {
+        "name": "Hyaluronan / mRNA binding family",
+        "start": 189,
+        "end": 314
+      }
+    ]
+  },
+  "Human-SLTM": {
+    "uniprot": "Q9NWH9",
+    "domains": [
+      {
+        "name": "SAP domain",
+        "start": 8,
+        "end": 66
+      },
+      {
+        "name": "Nucleotide-binding alpha-beta plait domain superfamily",
+        "start": 266,
+        "end": 475
+      }
+    ]
+  },
+  "Human-U2AF1": {
+    "uniprot": "Q01081",
+    "domains": [
+      {
+        "name": "Zinc finger C3H1-type profile",
+        "start": 12,
+        "end": 40
+      },
+      {
+        "name": "RNA recognition motif (RRM)",
+        "start": 43,
+        "end": 146
+      },
+      {
+        "name": "Zinc finger C3H1-type profile",
+        "start": 149,
+        "end": 176
+      }
+    ]
+  },
+  "Mouse-Apc": {
+    "uniprot": "Q61315",
+    "domains": [
+      {
+        "name": "Helix hairpin bin",
+        "start": 124,
+        "end": 248
+      },
+      {
+        "name": "Leucine-rich Repeat Variant",
+        "start": 324,
+        "end": 737
+      }
+    ]
+  },
+  "Mouse-Msi2": {
+    "uniprot": "Q920Q6",
+    "domains": [
+      {
+        "name": "RRM1",
+        "start": 17,
+        "end": 109
+      },
+      {
+        "name": "RNA-binding domain",
+        "start": 110,
+        "end": 244
+      }
+    ]
+  },
+  "Mouse-Pou5f1": {
+    "uniprot": "P20263",
+    "domains": [
+      {
+        "name": "lambda repressor-like DNA-binding domains",
+        "start": 136,
+        "end": 226
+      },
+      {
+        "name": "Homeodomain-like",
+        "start": 223,
+        "end": 288
+      }
+    ]
+  },
+  "Mouse-Srsf2": {
+    "uniprot": "Q62093",
+    "domains": [
+      {
+        "name": "RNA-binding domain",
+        "start": 6,
+        "end": 120
+      }
+    ]
+  },
+  "Mouse-Yy1": {
+    "uniprot": "Q00899",
+    "domains": [
+      {
+        "name": "Classic Zinc Finger",
+        "start": 292,
+        "end": 322
+      },
+      {
+        "name": "Classic Zinc Finger",
+        "start": 323,
+        "end": 350
+      },
+      {
+        "name": "Classic Zinc Finger",
+        "start": 351,
+        "end": 381
+      },
+      {
+        "name": "Classic Zinc Finger",
+        "start": 382,
+        "end": 414
+      }
+    ]
+  },
+  "Worm-gld-1": {
+    "uniprot": "Q17339",
+    "domains": [
+      {
+        "name": "K Homology domain",
+        "start": 198,
+        "end": 336
+      }
+    ]
+  },
+  "Yeast-LEO1": {
+    "uniprot": "P38439",
+    "domains": [
+      {
+        "name": "TED consensus domain",
+        "start": 167,
+        "end": 314
+      }
+    ]
+  },
+  "Yeast-MSL5": {
+    "uniprot": "Q12186",
+    "domains": [
+      {
+        "name": "Splicing factor 1 helix-hairpin domain",
+        "start": 33,
+        "end": 143
+      },
+      {
+        "name": "K Homology domain",
+        "start": 143,
+        "end": 268
+      },
+      {
+        "name": "Zinc finger",
+        "start": 269,
+        "end": 326
+      },
+      {
+        "name": "Clathrin adaptor appendage domain",
+        "start": 343,
+        "end": 446
+      }
+    ]
+  },
+  "Yeast-NAB2": {
+    "uniprot": "P32505",
+    "domains": [
+      {
+        "name": "Nuclear abundant poly(A) RNA-bind protein 2",
+        "start": 1,
+        "end": 105
+      }
+    ]
+  },
+  "Yeast-NPL3": {
+    "uniprot": "Q01560",
+    "domains": [
+      {
+        "name": "RNA-binding domain",
+        "start": 87,
+        "end": 199
+      },
+      {
+        "name": "RNA-binding domain",
+        "start": 198,
+        "end": 286
+      }
+    ]
+  },
+  "Yeast-PAF1": {
+    "uniprot": "P38351",
+    "domains": []
+  },
+  "Yeast-RPO21": {
+    "uniprot": "P04050",
+    "domains": [
+      {
+        "name": "beta and beta-prime subunits of DNA dependent RNA-polymerase",
+        "start": 4,
+        "end": 1448
+      }
+    ]
+  },
+  "Yeast-RTF1": {
+    "uniprot": "P53064",
+    "domains": [
+      {
+        "name": "Plus3 domain profile",
+        "start": 238,
+        "end": 370
+      }
+    ]
+  },
+  "Yeast-SPT6": {
+    "uniprot": "P23615",
+    "domains": [
+      {
+        "name": "helix-hairpin-helix domain",
+        "start": 299,
+        "end": 332
+      },
+      {
+        "name": "RuvA domain 2-like",
+        "start": 333,
+        "end": 484
+      },
+      {
+        "name": "Tex N-terminal region-like",
+        "start": 501,
+        "end": 742
+      },
+      {
+        "name": "YqgF/RNase H-like domain",
+        "start": 743,
+        "end": 886
+      },
+      {
+        "name": "Tex N-terminal region-like",
+        "start": 887,
+        "end": 931
+      },
+      {
+        "name": "helix-hairpin-helix domain",
+        "start": 932,
+        "end": 1002
+      },
+      {
+        "name": "Death-like domain",
+        "start": 1003,
+        "end": 1108
+      },
+      {
+        "name": "?S1/OB domain",
+        "start": 1119,
+        "end": 1209
+      },
+      {
+        "name": "SH2 domain",
+        "start": 1225,
+        "end": 1436
+      }
+    ]
+  }
+}
