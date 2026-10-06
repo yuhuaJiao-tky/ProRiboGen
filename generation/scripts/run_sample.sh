@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# One sample.py process per visible GPU (not DDP).
+#   bash scripts/run_sample.sh
+#     8 cards -> 8 jobs; 1 card -> 1 job
+#   CUDA_VISIBLE_DEVICES=0,1,2,3 bash scripts/run_sample.sh
+#   NUM_GPUS=2 bash scripts/run_sample.sh          # first 2 of the visible set
+#   NUM_GPUS=1 BS=16 bash scripts/run_sample.sh
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
@@ -9,15 +15,42 @@ export PYTORCH_CUDA_ALLOC_CONF="${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:T
 OUT_BASE="${OUT_BASE:-outputs/sample}"
 CFG="${CFG:-config/sample.json}"
 CKPT="${CKPT:-checkpoints/generator.pt}"
-BS="${BS:-64}"
 CSV_DIR="${CSV_DIR:-data/csvs}"
 PREFIX="${PREFIX:-sample_test}"
 TEST_CSV="${TEST_CSV:-data/test.csv}"
 ENTRY="${ENTRY:-sample.py}"
 NUM_SEQ="${NUM_SEQ:-1024}"
-NUM_GPUS="${NUM_GPUS:-8}"
 PYTHON="${PYTHON:-python3}"
 LOG="${LOG:-logs/sample.nohup.log}"
+
+if [[ -n "${CUDA_VISIBLE_DEVICES:-}" ]]; then
+  IFS=',' read -ra GPU_IDS <<< "$CUDA_VISIBLE_DEVICES"
+  for i in "${!GPU_IDS[@]}"; do
+    GPU_IDS[$i]="$(echo "${GPU_IDS[$i]}" | tr -d ' ')"
+  done
+else
+  GPU_IDS=()
+  if command -v nvidia-smi >/dev/null 2>&1; then
+    mapfile -t GPU_IDS < <(nvidia-smi --query-gpu=index --format=csv,noheader 2>/dev/null | tr -d ' ')
+  fi
+  if [[ ${#GPU_IDS[@]} -eq 0 ]]; then
+    GPU_IDS=(0)
+  fi
+fi
+NUM_GPUS="${NUM_GPUS:-${#GPU_IDS[@]}}"
+if [[ "$NUM_GPUS" -lt 1 ]]; then
+  echo "NUM_GPUS must be >= 1" >&2
+  exit 1
+fi
+if [[ "$NUM_GPUS" -gt "${#GPU_IDS[@]}" ]]; then
+  echo "NUM_GPUS=$NUM_GPUS but only ${#GPU_IDS[@]} GPU(s) visible: ${GPU_IDS[*]}" >&2
+  echo "Use fewer jobs, e.g. NUM_GPUS=${#GPU_IDS[@]} bash scripts/run_sample.sh" >&2
+  exit 1
+fi
+GPU_IDS=("${GPU_IDS[@]:0:$NUM_GPUS}")
+if [[ -z "${BS:-}" ]]; then
+  if [[ "$NUM_GPUS" -eq 1 ]]; then BS=16; else BS=64; fi
+fi
 
 mkdir -p logs "$OUT_BASE" "$CSV_DIR"
 
@@ -33,7 +66,7 @@ mkdir -p logs "$OUT_BASE" "$CSV_DIR"
   --num-sequences "$NUM_SEQ" \
   --num-gpus "$NUM_GPUS"
 
-echo "[$(date '+%F %T')] START sample  bs=$BS  n=$NUM_SEQ  out=$OUT_BASE"
+echo "[$(date '+%F %T')] START sample  bs=$BS  n=$NUM_SEQ  gpus=${NUM_GPUS} [${GPU_IDS[*]}]  out=$OUT_BASE"
 echo "  entry=$ENTRY  ckpt=$CKPT  cfg=$CFG"
 
 pids=()
@@ -43,9 +76,10 @@ for ((i=0; i<NUM_GPUS; i++)); do
   mkdir -p "$OUT"
   GPU_LOG="${OUT_BASE}/gpu${i}.nohup.log"
   nlines=$(($(wc -l < "$CSV") - 1))
-  echo "  GPU${i}: ${nlines} proteins -> $OUT"
+  gid="${GPU_IDS[$i]}"
+  echo "  GPU${i} (id=${gid}): ${nlines} proteins -> $OUT"
   env -u HIP_VISIBLE_DEVICES -u ROCR_VISIBLE_DEVICES \
-    CUDA_VISIBLE_DEVICES="${i}" \
+    CUDA_VISIBLE_DEVICES="${gid}" \
     PYTHONUNBUFFERED=1 \
     "$PYTHON" "$ENTRY" \
       --config "$ROOT/$CFG" \

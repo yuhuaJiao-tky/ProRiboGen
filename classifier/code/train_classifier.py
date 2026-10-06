@@ -33,6 +33,7 @@ from labeled_dataset import (  # noqa: E402
     PairedBatchSampler,
     build_pair_indices,
     make_collate,
+    resolve_local_tokenizer,
     split_pair_indices,
 )
 from losses import CombinedClassificationLoss  # noqa: E402
@@ -295,13 +296,11 @@ def train() -> None:
     cfg = load_config(args.generator_config)
     data_cfg = cfg["data"]
     cfg_path = Path(args.generator_config).resolve()
-    tok_path = os.path.join(str(cfg_path.parent), data_cfg["tokenizer_path"])
-    if not os.path.isdir(tok_path):
-        tok_path = data_cfg["tokenizer_path"]
+    tok_path = resolve_local_tokenizer(data_cfg["tokenizer_path"], gen_root=_GEN_ROOT, config_path=cfg_path)
 
     from transformers import AutoTokenizer
 
-    tokenizer = AutoTokenizer.from_pretrained(tok_path, trust_remote_code=True)
+    tokenizer = AutoTokenizer.from_pretrained(tok_path, trust_remote_code=True, local_files_only=True)
 
     h5_path = args.protein_h5 or data_cfg["protein_h5"]
     if not os.path.isabs(h5_path):

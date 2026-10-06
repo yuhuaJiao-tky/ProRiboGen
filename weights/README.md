@@ -1,9 +1,17 @@
 # Large files (not in git)
 
-Local copy for Hugging Face upload: `/work/home/acr7e7g18v/JYH/ProRiboGen_HuggingFace/`
+Download the Hugging Face pack to **any directory**. Paths inside the pack match this repo.
 
-| Path | Size | Role |
-|------|------|------|
+```bash
+huggingface-cli download USER/ProRiboGen-weights --local-dir /any/path/ProRiboGen-weights
+bash generation/scripts/link_local_data.sh /any/path/ProRiboGen-weights
+```
+
+`HF=/any/path/ProRiboGen-weights bash generation/scripts/link_local_data.sh` is equivalent.  
+`COPY=1` copies files instead of symlinking.
+
+| Path in this repo | Size | Role |
+|-------------------|------|------|
 | `generation/checkpoints/generator.pt` | ~597 MB | generator weights |
 | `generation/data/train.csv` | ~175 MB | generator train pairs |
 | `generation/data/test.csv` | ~25 MB | generator test pairs |
@@ -12,14 +20,7 @@ Local copy for Hugging Face upload: `/work/home/acr7e7g18v/JYH/ProRiboGen_Huggin
 | `classifier/data/train_labeled.csv` | ~51 MB | classifier train table |
 | `classifier/data/test_labeled.csv` | ~6.5 MB | classifier test table |
 
-`generator.pt` SHA256: `7d8282a9bc8e70751e4d984eb96e3d4dd12264b8f121b353b7ad128859cbe1c9`  
-`classifier.pt` SHA256: `bd77d87bc58a191398300d9ca795825fd23576c550a8228bb44c20f6a068ff52`
-
-This machine:
-
-```bash
-cd generation
-bash scripts/link_local_data.sh
-```
+`generator.pt` SHA256: `2b5dd15832c23444c07137dbc65863cacd38477c721a8525d661cc3f3b40d4cb`  
+`classifier.pt` SHA256: `1d37ba04d2e6cc530b81cb01299c2197dd2e873fd5cbf78441301cab1b6359e7`
 
 Hugging Face repo (fill in after you create it): `YOUR_HF_USER/ProRiboGen-weights`

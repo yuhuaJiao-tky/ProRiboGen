@@ -22,7 +22,13 @@ def convert_meme_tree(motifs_root: Path, homer_out: Path) -> int:
             shutil.copy(meme, flat / f"{p_id}.txt")
             n += 1
         if n == 0:
-            raise FileNotFoundError(f"未找到 meme.txt: {motifs_root}")
+            raise FileNotFoundError(
+                f"No meme.txt under {motifs_root}. "
+                "Run MEME first (from repo root, with `meme` on PATH):\n"
+                "  python motif/find_motif_meme.py generation/outputs/sample/fasta_merged motif/outputs/meme --threads 8\n"
+                "Then convert:\n"
+                "  python motif/meme_dirs_to_homer.py motif/outputs/meme motif/outputs/homer"
+            )
         batch_process_txt_folder_to_homer(str(flat), str(homer_out))
     return n
 

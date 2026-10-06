@@ -19,6 +19,40 @@ if str(_GEN_ROOT) not in sys.path:
 from src.utils import RnaRbpDataset, rna_rbp_collate_fn  # noqa: E402
 
 
+def resolve_local_tokenizer(tokenizer_path: str, *, gen_root: Path | None = None, config_path: str | Path | None = None) -> str:
+    """Resolve `tokenizer` to generation/tokenizer, not Hugging Face repo id `tokenizer`."""
+    gen_root = Path(gen_root) if gen_root is not None else _GEN_ROOT
+    raw = Path(tokenizer_path)
+    if raw.is_dir():
+        return str(raw.resolve())
+    candidates = [gen_root / tokenizer_path]
+    if config_path is not None:
+        cfg_dir = Path(config_path).resolve().parent
+        candidates.extend([cfg_dir / tokenizer_path, cfg_dir.parent / tokenizer_path])
+    for c in candidates:
+        if c.is_dir() and (c / "tokenizer_config.json").is_file():
+            return str(c.resolve())
+    tried = ", ".join(str(c) for c in candidates)
+    raise FileNotFoundError(
+        f"local tokenizer directory not found (tried: {tried}). "
+        "The git repo should contain generation/tokenizer/."
+    )
+
+
+def resolve_generator_ckpt(path: str | None, *, gen_root: Path | None = None) -> str:
+    """Use a local generator.pt if the path stored in the classifier ckpt is from another machine."""
+    gen_root = Path(gen_root) if gen_root is not None else _GEN_ROOT
+    fallback = gen_root / "checkpoints" / "generator.pt"
+    if path and Path(path).is_file():
+        return str(Path(path).resolve())
+    if fallback.is_file():
+        return str(fallback.resolve())
+    raise FileNotFoundError(
+        f"generator checkpoint not found (ckpt had {path!r}; also tried {fallback}). "
+        "Link Hugging Face weights: bash generation/scripts/link_local_data.sh /path/to/HF_pack"
+    )
+
+
 class LabeledRnaRbpDataset(RnaRbpDataset):
     """Adds a ``label`` column (0/1)."""
 

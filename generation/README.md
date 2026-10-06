@@ -45,28 +45,23 @@ Other train defaults: 20 epochs, bf16, per-GPU batch 16.
 
 ## Test (sample)
 
-Sampling is **one process per GPU**, not DDP. Set `NUM_GPUS` to the number of cards you want. The script shards the protein list across those processes.
-
-### Multi-GPU (default 8)
+Sampling is **one process per visible GPU**, not DDP. The same script covers 1–8+ cards.
 
 ```bash
 bash scripts/run_sample.sh
 ```
 
-Equivalent: `NUM_GPUS=8 BS=64 bash scripts/run_sample.sh`
+| Setup | Command |
+|-------|---------|
+| All GPUs on the node | `bash scripts/run_sample.sh` |
+| Four cards | `CUDA_VISIBLE_DEVICES=0,1,2,3 bash scripts/run_sample.sh` |
+| First two of the visible set | `NUM_GPUS=2 bash scripts/run_sample.sh` |
+| One GPU | `NUM_GPUS=1 bash scripts/run_sample.sh` |
+
+Default batch is 64 (multi-GPU) or 16 (single GPU). Override with `BS=8` if you OOM.
 
 33 hold-out proteins, 1024 sequences each, 80 nt.  
 Output: `outputs/sample/fasta_merged/`
-
-### Single GPU
-
-You **must** set `NUM_GPUS=1`. If you leave the default 8, the script still splits CSVs into 8 shards and tries to launch 8 jobs.
-
-```bash
-NUM_GPUS=1 BS=16 bash scripts/run_sample.sh
-```
-
-OOM: `NUM_GPUS=1 BS=8 bash scripts/run_sample.sh`
 
 ### One process, custom protein CSV
 

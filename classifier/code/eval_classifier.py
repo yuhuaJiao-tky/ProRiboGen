@@ -22,7 +22,7 @@ sys.path.insert(0, str(_GEN_ROOT))
 from src.model import EsmConfig, EsmForMaskedLM  # noqa: E402
 from src.utils import base_config, _remap_legacy_checkpoint_state_dict  # noqa: E402
 
-from labeled_dataset import LabeledRnaRbpDataset, make_collate  # noqa: E402
+from labeled_dataset import LabeledRnaRbpDataset, make_collate, resolve_generator_ckpt, resolve_local_tokenizer  # noqa: E402
 from losses import CombinedClassificationLoss  # noqa: E402
 from model import RnaRealismClassifierV3  # noqa: E402
 
@@ -255,9 +255,10 @@ def main() -> None:
     bundle = torch.load(Path(args.classifier_ckpt), map_location="cpu")
     gen_cfg = bundle.get("generator_config") or bundle["d3lm_config"]
     train_args = bundle.get("train_args") or {}
-    pretrained = args.pretrained_ckpt or train_args.get("pretrained_ckpt")
-    if not pretrained:
-        raise ValueError("pass --pretrained_ckpt or store train_args['pretrained_ckpt'] in the ckpt")
+    pretrained = resolve_generator_ckpt(
+        args.pretrained_ckpt or train_args.get("pretrained_ckpt"),
+        gen_root=_GEN_ROOT,
+    )
 
     rw = args.ranking_weight if args.ranking_weight is not None else float(train_args.get("ranking_weight", 0.5))
     rm = args.ranking_margin if args.ranking_margin is not None else float(train_args.get("ranking_margin", 0.5))
@@ -265,13 +266,11 @@ def main() -> None:
 
     data_cfg = gen_cfg["data"]
     cfg_path = Path(args.generator_config).resolve()
-    tok_path = os.path.join(str(cfg_path.parent), data_cfg["tokenizer_path"])
-    if not os.path.isdir(tok_path):
-        tok_path = data_cfg["tokenizer_path"]
+    tok_path = resolve_local_tokenizer(data_cfg["tokenizer_path"], gen_root=_GEN_ROOT, config_path=cfg_path)
 
     from transformers import AutoTokenizer
 
-    tokenizer = AutoTokenizer.from_pretrained(tok_path, trust_remote_code=True)
+    tokenizer = AutoTokenizer.from_pretrained(tok_path, trust_remote_code=True, local_files_only=True)
     h5_path = args.protein_h5 or data_cfg["protein_h5"]
     if not os.path.isabs(h5_path):
         h5_path = str(cfg_path.parent / h5_path)

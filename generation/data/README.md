@@ -11,8 +11,11 @@ Paths in configs are relative to `generation/`.
 CSV columns: `p_id,protein,rna,r_id,s,t,score,type,p_len,r_len` (see `example_pairs.csv`).  
 Split: `split_manifest.json` (304 train / 33 test).
 
-This machine: `bash scripts/link_local_data.sh`  
-Or copy from `ProRiboGen_HuggingFace/generation/data/`.
+From the repo root, after downloading the Hugging Face pack anywhere:
+
+```bash
+bash generation/scripts/link_local_data.sh /path/to/ProRiboGen-weights
+```
 
 If you need to rebuild the H5:
 

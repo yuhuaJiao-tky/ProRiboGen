@@ -4,6 +4,7 @@
 #                                  #
 ####################################
 
+from __future__ import annotations
 
 from src.utils import (
     create_logger,

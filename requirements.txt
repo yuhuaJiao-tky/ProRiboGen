@@ -1,5 +1,6 @@
-torch>=2.1
-transformers>=4.40
+# Install torch from the CUDA 12.4 wheel index (see README), not default PyPI.
+# torch==2.4.1+cu124
+transformers==4.54.1
 pandas
 numpy
 h5py

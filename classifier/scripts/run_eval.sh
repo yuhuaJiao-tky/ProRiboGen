@@ -16,6 +16,7 @@ TEST_LABELED="${TEST_LABELED:-$PROJECT_ROOT/data/test_labeled.csv}"
 OUTPUT_PREDS="${OUTPUT_PREDS:-$PROJECT_ROOT/data/test_preds.csv}"
 OUTPUT_LABELED_PREDS="${OUTPUT_LABELED_PREDS:-${TEST_LABELED%.csv}_preds.csv}"
 CKPT="${CLASSIFIER_CKPT:-$PROJECT_ROOT/checkpoints/classifier.pt}"
+PRETRAINED="${PRETRAINED:-$GEN_ROOT/checkpoints/generator.pt}"
 BATCH_SIZE="${BATCH_SIZE:-16}"
 NUM_WORKERS="${NUM_WORKERS:-4}"
 
@@ -37,6 +38,7 @@ torchrun --standalone --nproc_per_node="$NPROC" "$CODE_DIR/eval_classifier.py" \
   --test_csv "$TEST_LABELED" \
   --generator_config "$GEN_CONFIG" \
   --classifier_ckpt "$CKPT" \
+  --pretrained_ckpt "$PRETRAINED" \
   --protein_h5 "$H5" \
   --batch_size_per_gpu "$BATCH_SIZE" \
   --num_workers "$NUM_WORKERS" \
