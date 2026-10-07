@@ -1,5 +1,6 @@
-# Install torch from the CUDA 12.4 wheel index (see README), not default PyPI.
-# torch==2.4.1+cu124
+# Torch is installed separately (see README):
+#   python -m pip install torch==2.4.1 --index-url https://download.pytorch.org/whl/cu124
+# Do not add torch here: default PyPI may install a CUDA 13 build.
 transformers==4.54.1
 pandas
 numpy

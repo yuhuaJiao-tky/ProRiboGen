@@ -2,6 +2,10 @@
 
 Protein-conditioned RNA generation.
 
+<p align="center">
+  <img src="methods/pngs/web.png" alt="ProRiboGen overview" width="900"/>
+</p>
+
 ---
 
 ## 1. Environment
@@ -19,20 +23,17 @@ which python
 python --version          # must be 3.10.x, path under envs/ProRiboGen
 ```
 
-Install packages with **that same** `python`:
+Install packages with **that same** `python`. Install **Torch first** from the CUDA 12.4 index (default PyPI may ship CUDA 13), then the rest from `requirements.txt`:
 
 ```bash
-python -m pip install -r requirements.txt
-python -m pip uninstall -y torch torchvision torchaudio
 python -m pip install torch==2.4.1 --index-url https://download.pytorch.org/whl/cu124
-python -m pip install transformers==4.54.1
+python -m pip install -r requirements.txt
 python -c "import torch, transformers, h5py; print(torch.__version__, torch.cuda.is_available(), transformers.__version__)"
 ```
 
 Expected: `2.4.1+cu124 True 4.54.1`.
 
-Do **not** install the default PyPI `torch` (it may be CUDA 13). Use the **cu124** wheel if `nvidia-smi` shows a CUDA 12.x driver.  
-Do **not** upgrade `transformers` past **4.54.1** while using Torch 2.4 (newer transformers require Torch ≥ 2.5).
+`requirements.txt` does **not** list `torch` (comment only), so it will not overwrite the cu124 wheel. Do **not** upgrade `transformers` past **4.54.1** while using Torch 2.4.
 
 If `python --version` is still 3.8 after activate, run with the env binary:
 
