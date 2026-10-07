@@ -67,37 +67,14 @@ Download (replace the repo id after the HF repo is public):
 huggingface-cli download USER/ProRiboGen-weights --local-dir /any/path/ProRiboGen-weights
 ```
 
-From the **ProRiboGen code repo root**, point at that folder (symlink by default; does not move the pack):
+From the **ProRiboGen code repo root**, link that folder into the expected paths:
 
 ```bash
 cd /path/to/ProRiboGen
 bash generation/scripts/link_local_data.sh /any/path/ProRiboGen-weights
 ```
 
-Same thing via an environment variable:
-
-```bash
-HF=/any/path/ProRiboGen-weights bash generation/scripts/link_local_data.sh
-```
-
-Copy files instead of symlink (if you will delete or move the HF folder later):
-
-```bash
-COPY=1 bash generation/scripts/link_local_data.sh /any/path/ProRiboGen-weights
-```
-
-Manual copy (if you prefer not to use the script):
-
-```bash
-HF=/any/path/ProRiboGen-weights
-cp -a "$HF/generation/data/." generation/data/
-mkdir -p generation/checkpoints classifier/data classifier/checkpoints
-cp -a "$HF/generation/checkpoints/." generation/checkpoints/
-cp -a "$HF/classifier/data/." classifier/data/
-cp -a "$HF/classifier/checkpoints/." classifier/checkpoints/
-```
-
-After linking or copying, this repo should contain:
+After that, this repo should contain:
 
 | Path | Size | Role |
 |------|------|------|
@@ -116,7 +93,29 @@ Sampling and classification **read embeddings from the H5**. You do not need VES
 ## 3. GPUs
 
 Paper settings use **8 GPUs**. **1 GPU and any subset also work.**  
-If you change GPU count and do not change accumulation, the **effective batch size** for training changes.
+If you change GPU count and do not change accumulation, the **effective batch size** for training changes. Always set `CUDA_VISIBLE_DEVICES` (or `gpu_ids` in the generation train config) to match the cards you actually have.
+
+---
+
+## 4. Generation module
+
+Code and configs live under `generation/`. More detail: `generation/README.md`.
+
+### Train
+
+Effective batch = `batch_size_per_gpu × (number of GPUs) × grad_accum_steps`.  
+Default in `generation/config/train.json`: 16 × 8 × 4 = **512**.
+
+GPU list is **only** `"gpu_ids"` in that JSON. Two or more IDs start DDP.
+
+```bash
+cd generation
+python train.py --config config/train.json
+```
+
+Single GPU: set `"gpu_ids": [0]`. To keep effective batch ≈ 512, also set `"grad_accum_steps": 32`.
+
+### Test (sample)
 
 Sampling is **one process per visible GPU** (not DDP). The script counts GPUs from `CUDA_VISIBLE_DEVICES` or `nvidia-smi`. It does **not** assume 8 cards.
 
@@ -154,51 +153,79 @@ Output: `generation/outputs/sample/fasta_merged/`
 
 ---
 
-## 4. Generator training
+## 5. Classification module
 
-Effective batch = `batch_size_per_gpu × (number of GPUs) × grad_accum_steps`.  
-Default in `generation/config/train.json`: 16 × 8 × 4 = **512**.
+Code and scripts live under `classifier/`. Run from the **repository root**.  
+Scripts use `torchrun` and the number of IDs in `CUDA_VISIBLE_DEVICES`. If unset, they default to **8 GPUs** (`0,1,2,3,4,5,6,7`) — set the variable on a smaller machine.  
+More detail: `classifier/README.md`.
 
-GPU list is **only** `"gpu_ids"` in that JSON. Two or more IDs start DDP.
-
-```bash
-cd generation
-python train.py --config config/train.json
-```
-
-Single GPU: set `"gpu_ids": [0]`. To keep effective batch ≈ 512, also set `"grad_accum_steps": 32`.
-
-More: `generation/README.md`.
-
----
-
-## 5. Classifier
-
-Run from the **repository root**. Scripts use `torchrun` and the number of IDs in `CUDA_VISIBLE_DEVICES`. If unset, they default to **8 GPUs** (`0,1,2,3,4,5,6,7`) — set the variable on a smaller machine.
+### Train
 
 ```bash
-# train
 CUDA_VISIBLE_DEVICES=0,1,2,3 bash classifier/scripts/run_train.sh
 CUDA_VISIBLE_DEVICES=0 bash classifier/scripts/run_train.sh
 # OOM
 BATCH_SIZE=4 CUDA_VISIBLE_DEVICES=0 bash classifier/scripts/run_train.sh
+```
 
-# eval
+Writes `classifier/checkpoints/classifier.pt`.
+
+### Test
+
+```bash
 CUDA_VISIBLE_DEVICES=0 bash classifier/scripts/run_eval.sh
 ```
 
-Writes `classifier/checkpoints/classifier.pt`.  
 Reference (threshold 0.5): accuracy 0.788, AUROC 0.878.
-
-More: `classifier/README.md`.
 
 ---
 
 ## 6. Attention / motif
 
-No extra training. Attention: `attention/README.md`.
+Analysis only (no training). Run from the **repository root**. Needs the linked generator checkpoint and protein embeddings.
 
-MEME is **not** in the ProRiboGen PyTorch env. Recreate the released MEME environment from `motif/meme.yml` (MEME 5.0.5):
+### Attention
+
+Protein–RNA cross-attention on the released generator. Uses the ProRiboGen PyTorch env. More: `attention/README.md`.
+
+Quick demo (built-in probe RNAs for a few proteins):
+
+```bash
+bash attention/run_demo.sh
+```
+
+Output: `attention/outputs/demo/`
+
+On generated RNA (sample first: `bash generation/scripts/run_sample.sh`):
+
+```bash
+python attention/fasta_to_probe_csv.py \
+  generation/outputs/sample/fasta_merged \
+  --out attention/probes_generated.csv
+
+python attention/analyze_rbd_cross_attention.py \
+  --rna-csv attention/probes_generated.csv \
+  --domain-json attention/domain_annotations_test.json \
+  --all-test-proteins \
+  --num-probes 256 \
+  --out-dir attention/outputs/generated
+
+python attention/plot_domain_vs_non.py --attn-dir attention/outputs/generated
+```
+
+Single protein:
+
+```bash
+python attention/analyze_rbd_cross_attention.py \
+  --proteins Human-PUM1 \
+  --domain-json attention/domain_annotations_test.json \
+  --num-probes 256 \
+  --out-dir attention/outputs/pum1
+```
+
+### Motif
+
+MEME is **not** in the ProRiboGen PyTorch env. Recreate the released MEME environment from `motif/meme.yml` (MEME 5.0.5). More: `motif/README.md`.
 
 ```bash
 conda env create -f motif/meme.yml
@@ -209,7 +236,7 @@ which meme
 
 If the env name `meme_new` already exists: `conda env update -n meme_new -f motif/meme.yml --prune`.
 
-Then, from the repo root, after sampling:
+After sampling, from the repo root:
 
 ```bash
 conda activate meme_new
@@ -219,7 +246,5 @@ python motif/plot_homer_logos.py motif/outputs/homer motif/outputs/logos
 ```
 
 The last command needs `logomaker` / `matplotlib` (in `requirements.txt`). You can run it in `ProRiboGen` after MEME has written `motif/outputs/meme/*/meme.txt`.
-
-Details: `motif/README.md`.
 
 MIT License.
