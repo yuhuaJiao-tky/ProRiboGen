@@ -13,8 +13,8 @@ H5="$GEN_ROOT/data/protein_embeddings.h5"
 GEN_CONFIG="$GEN_ROOT/config/train.json"
 TEST_SRC="${TEST_SRC:-$GEN_ROOT/data/test.csv}"
 TEST_LABELED="${TEST_LABELED:-$PROJECT_ROOT/data/test_labeled.csv}"
-OUTPUT_PREDS="${OUTPUT_PREDS:-$PROJECT_ROOT/data/test_preds.csv}"
-OUTPUT_LABELED_PREDS="${OUTPUT_LABELED_PREDS:-${TEST_LABELED%.csv}_preds.csv}"
+# Predictions go under outputs/ (inputs stay in data/)
+OUTPUT_LABELED_PREDS="${OUTPUT_LABELED_PREDS:-$PROJECT_ROOT/outputs/test_labeled_preds.csv}"
 CKPT="${CLASSIFIER_CKPT:-$PROJECT_ROOT/checkpoints/classifier.pt}"
 PRETRAINED="${PRETRAINED:-$GEN_ROOT/checkpoints/generator.pt}"
 BATCH_SIZE="${BATCH_SIZE:-16}"
@@ -43,7 +43,5 @@ torchrun --standalone --nproc_per_node="$NPROC" "$CODE_DIR/eval_classifier.py" \
   --batch_size_per_gpu "$BATCH_SIZE" \
   --num_workers "$NUM_WORKERS" \
   --use_bf16 \
-  --output_preds_csv "$OUTPUT_PREDS" \
-  --preds_wide_src "$TEST_SRC" \
   --output_labeled_preds_csv "$OUTPUT_LABELED_PREDS" \
   2>&1 | tee "$LOG"

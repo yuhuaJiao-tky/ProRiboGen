@@ -17,13 +17,21 @@ Output: `attention/outputs/demo/`
 
 First sample: `bash generation/scripts/run_sample.sh`
 
+Two-step pipeline (probe CSV is only an intermediate; results live under `--out-dir`):
+
+1. **Build probes** → `attention/outputs/generated/probes_generated.csv`  
+2. **Run attention** → writes `protein_index.csv`, `profiles/`, ratio tables, etc. under `attention/outputs/generated/`  
+   (`protein_index.csv` appears only after this step finishes all proteins.)
+
 ```bash
+mkdir -p attention/outputs/generated
+
 python attention/fasta_to_probe_csv.py \
   generation/outputs/sample/fasta_merged \
-  --out attention/probes_generated.csv
+  --out attention/outputs/generated/probes_generated.csv
 
 python attention/analyze_rbd_cross_attention.py \
-  --rna-csv attention/probes_generated.csv \
+  --rna-csv attention/outputs/generated/probes_generated.csv \
   --domain-json attention/domain_annotations_test.json \
   --all-test-proteins \
   --num-probes 256 \

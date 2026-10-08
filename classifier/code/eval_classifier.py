@@ -185,6 +185,7 @@ def _save_predictions(
     if output_labeled_preds_csv:
         Path(output_labeled_preds_csv).parent.mkdir(parents=True, exist_ok=True)
         out_lab.to_csv(output_labeled_preds_csv, index=False)
+        print(f"Wrote labeled predictions -> {output_labeled_preds_csv}", flush=True)
     if not output_wide_csv:
         return
     wide_path = Path(output_wide_csv)
@@ -208,8 +209,6 @@ def _save_predictions(
     df_wide["neg_pred_label"] = df_neg["pred_label"].to_numpy()
     df_wide.to_csv(wide_path, index=False)
     print(f"Wrote wide predictions -> {wide_path}", flush=True)
-    if output_labeled_preds_csv:
-        print(f"Wrote labeled predictions -> {output_labeled_preds_csv}", flush=True)
 
 
 @torch.no_grad()

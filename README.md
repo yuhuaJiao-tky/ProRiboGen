@@ -180,6 +180,8 @@ Writes `classifier/checkpoints/classifier.pt`.
 CUDA_VISIBLE_DEVICES=0 bash classifier/scripts/run_eval.sh
 ```
 
+Writes `classifier/outputs/test_labeled_preds.csv` and metrics log `classifier/outputs/eval_*.log`.
+
 ---
 
 ## 6. Attention / motif
@@ -201,12 +203,14 @@ Output: `attention/outputs/demo/`
 On generated RNA (sample first: `bash generation/scripts/run_sample.sh`):
 
 ```bash
+mkdir -p attention/outputs/generated
+
 python attention/fasta_to_probe_csv.py \
   generation/outputs/sample/fasta_merged \
-  --out attention/probes_generated.csv
+  --out attention/outputs/generated/probes_generated.csv
 
 python attention/analyze_rbd_cross_attention.py \
-  --rna-csv attention/probes_generated.csv \
+  --rna-csv attention/outputs/generated/probes_generated.csv \
   --domain-json attention/domain_annotations_test.json \
   --all-test-proteins \
   --num-probes 256 \

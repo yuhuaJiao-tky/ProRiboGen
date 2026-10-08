@@ -53,6 +53,15 @@ CUDA_VISIBLE_DEVICES=0 bash classifier/scripts/run_eval.sh
 
 Reference (threshold 0.5): accuracy 0.788, AUROC 0.878.
 
+Writes under `classifier/outputs/`:
+
+| File | Role |
+|------|------|
+| `eval_*.log` | metrics log |
+| `test_labeled_preds.csv` | each true RNA and its shuffled negative as separate rows (`label` 0/1) + `pred_*` |
+
+`classifier/data/*.csv` are **inputs** (from the HF pack), not eval outputs.
+
 Score a generated FASTA (one GPU / one process):
 
 ```bash
