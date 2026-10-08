@@ -46,7 +46,17 @@ If `python --version` is still 3.8 after activate, run with the env binary:
 
 ## 2. Weights and data (Hugging Face)
 
-Large files are **not** in GitHub. Download the Hugging Face pack to **any folder** on your machine. You do not need our internal path.
+Released checkpoints and data live on Hugging Face (not in this GitHub repo):
+
+**https://huggingface.co/datasets/yuhuajiaotky/ProRiboGen-weights**
+
+Download the pack to **any folder** on your machine:
+
+```bash
+huggingface-cli download yuhuajiaotky/ProRiboGen-weights \
+  --repo-type dataset \
+  --local-dir /any/path/ProRiboGen-weights
+```
 
 Pack layout (same as this repo):
 
@@ -59,12 +69,6 @@ Pack layout (same as this repo):
   classifier/data/train_labeled.csv
   classifier/data/test_labeled.csv
   classifier/checkpoints/classifier.pt
-```
-
-Download (replace the repo id after the HF repo is public):
-
-```bash
-huggingface-cli download USER/ProRiboGen-weights --local-dir /any/path/ProRiboGen-weights
 ```
 
 From the **ProRiboGen code repo root**, link that folder into the expected paths:
@@ -175,8 +179,6 @@ Writes `classifier/checkpoints/classifier.pt`.
 ```bash
 CUDA_VISIBLE_DEVICES=0 bash classifier/scripts/run_eval.sh
 ```
-
-Reference (threshold 0.5): accuracy 0.788, AUROC 0.878.
 
 ---
 

@@ -1,9 +1,11 @@
 # Large files (not in git)
 
+**Weights pack:** https://huggingface.co/datasets/yuhuajiaotky/ProRiboGen-weights
+
 Download the Hugging Face pack to **any directory**. Paths inside the pack match this repo.
 
 ```bash
-huggingface-cli download USER/ProRiboGen-weights --local-dir /any/path/ProRiboGen-weights
+huggingface-cli download yuhuajiaotky/ProRiboGen-weights --repo-type dataset --local-dir /any/path/ProRiboGen-weights
 bash generation/scripts/link_local_data.sh /any/path/ProRiboGen-weights
 ```
 
@@ -23,4 +25,4 @@ bash generation/scripts/link_local_data.sh /any/path/ProRiboGen-weights
 `generator.pt` SHA256: `2b5dd15832c23444c07137dbc65863cacd38477c721a8525d661cc3f3b40d4cb`  
 `classifier.pt` SHA256: `1d37ba04d2e6cc530b81cb01299c2197dd2e873fd5cbf78441301cab1b6359e7`
 
-Hugging Face repo (fill in after you create it): `YOUR_HF_USER/ProRiboGen-weights`
+Hugging Face dataset: [`yuhuajiaotky/ProRiboGen-weights`](https://huggingface.co/datasets/yuhuajiaotky/ProRiboGen-weights)
