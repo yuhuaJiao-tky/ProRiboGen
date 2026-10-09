@@ -3,7 +3,7 @@
 Protein-conditioned RNA generation.
 
 <p align="center">
-  <img src="methods/pngs/web.png" alt="ProRiboGen overview" width="900"/>
+  <img src="assets/web.png" alt="ProRiboGen overview" width="900"/>
 </p>
 
 ---
