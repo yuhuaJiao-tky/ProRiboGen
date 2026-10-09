@@ -231,26 +231,28 @@ python attention/analyze_rbd_cross_attention.py \
 
 ### Motif
 
-MEME is **not** in the ProRiboGen PyTorch env. Recreate the released MEME environment from `motif/meme.yml` (MEME 5.0.5). More: `motif/README.md`.
+MEME is **not** in the ProRiboGen PyTorch env. One script runs MEME, keeps **all** motifs with E ≤ 0.05 as HOMER, and draws paper-style logos (`logo1.png` …) in each protein folder. More: `motif/README.md`.
 
 ```bash
 conda env create -f motif/meme.yml
 conda activate meme_new
 meme -version
-which meme
 ```
 
-If the env name `meme_new` already exists: `conda env update -n meme_new -f motif/meme.yml --prune`.
+`meme.yml` already includes `logomaker` / `matplotlib`.  
+If `meme_new` already exists: `conda env update -n meme_new -f motif/meme.yml --prune`.
 
 After sampling, from the repo root:
 
 ```bash
 conda activate meme_new
-python motif/find_motif_meme.py generation/outputs/sample/fasta_merged motif/outputs/meme --threads 8
-python motif/meme_dirs_to_homer.py motif/outputs/meme motif/outputs/homer
-python motif/plot_homer_logos.py motif/outputs/homer motif/outputs/logos
+python motif/run_motif_pipeline.py \
+  generation/outputs/sample/fasta_merged \
+  motif/outputs/meme \
+  --threads 8
 ```
 
-The last command needs `logomaker` / `matplotlib` (in `requirements.txt`). You can run it in `ProRiboGen` after MEME has written `motif/outputs/meme/*/meme.txt`.
+Output per protein: `motif/outputs/meme/<p_id>/{meme.txt,<p_id>.motif,logo1.png,…}`.  
+MEME’s own logos are removed; ours use the notebook color scheme (A/C/G/U).
 
 MIT License.

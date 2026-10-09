@@ -37,7 +37,8 @@ def extract_motifs_to_homer(
         if motif_match:
             if motif_name and matrix_lines:
                 try:
-                    e_value = float(matrix_lines[0].split("E=")[1].strip())
+                    m_e = re.search(r"\bE=\s*([0-9.eE+-]+)", matrix_lines[0])
+                    e_value = float(m_e.group(1)) if m_e else float("inf")
                     if e_value <= 0.05:
                         motif_count += 1
                         significant_motifs.append(
@@ -54,7 +55,7 @@ def extract_motifs_to_homer(
             motif_name = motif_match.group(1)
 
         matrix_header = re.search(
-            r"letter-probability matrix: .* E= ([0-9eE.+-]+)", line
+            r"letter-probability matrix:.*\bE=\s*([0-9.eE+-]+)", line
         )
         if matrix_header:
             e_value = float(matrix_header.group(1))
@@ -72,7 +73,8 @@ def extract_motifs_to_homer(
 
     if motif_name and matrix_lines:
         try:
-            e_value = float(matrix_lines[0].split("E=")[1].strip())
+            m_e = re.search(r"\bE=\s*([0-9.eE+-]+)", matrix_lines[0])
+            e_value = float(m_e.group(1)) if m_e else float("inf")
             if e_value <= 0.05:
                 motif_count += 1
                 significant_motifs.append(
